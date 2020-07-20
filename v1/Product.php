@@ -65,11 +65,11 @@ class Product
 		return $result;
 	}
 
-	public function creatDelivery($product_id, $destination, $order_delivery){
+	public function creatDelivery($data){
 
-		$this->getProduct($product_id);
+		$this->getProduct($data->product_id);
 
-		if ( (strtotime($order_delivery) - time()) <= 0 ){
+		if ( (strtotime($data->date_delivery) - time()) <= 0 ){
 
 			http_response_code(404);
 			echo json_encode(array("error" => "Неверная дата"), JSON_UNESCAPED_UNICODE);
@@ -80,7 +80,13 @@ class Product
 		$today =  date("Y-m-d H:i");
 
 
-		$query = "INSERT INTO delivery (order_date_create, order_delivery, product_id, destination) VALUES ('".$today."', '".$order_delivery."', '".$product_id."', '".$destination."') RETURNING order_id";
+		$query = "INSERT INTO delivery (order_date_create, order_delivery, product_id, destination, client_name, phone) 
+						VALUES ('".$today."', 
+								'".$data->date_delivery."', 
+								'".$data->product_id."', 
+								'".$data->destination."',
+								'".$data->name."',
+								'".$data->phone."') RETURNING order_id";
 
 		$result = pg_query($this->connection, $query);
 

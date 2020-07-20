@@ -24,10 +24,8 @@ require_once "Product.php";
 	http_response_code(200);
 
 	echo calc($product)."\n";
-//	var_dump( $product);
 
 function calc($product){
-		$sumResult = 0;
 			$weight = $product['weight'];
 			$width = $product['width'];
 			$height = $product['height'];
@@ -35,11 +33,8 @@ function calc($product){
 			$cof = ($weight / 1000 - 5) * 200;
 			$cof > 0 ? $cof += ($width * $height) / 100 : $cof = ($width * $height) / 100 ;
 			$o = $cof % 100;
-			if ($o > 0 ){
-				$s = 100-$o;
-				$o += $s;
-			}
-				$sumResult += $o;
+			if ($o > 0 )
+				$cof += 100-$o;
 
-		return $sumResult;
+		return $cof;
 	}

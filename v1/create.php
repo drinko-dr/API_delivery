@@ -12,20 +12,19 @@ require_once "Product.php";
 
 	$client_id = $headers['Client-Id'];
 	$api_key = $headers['Api-Key'];
-	$product_id = $data->product_id;
-	$destination = $data->destination;
-	$date_end = $data->date_end;
 
-	if ( !empty($product_id) &&
-		 !empty($destination) &&
-		 !empty($date_end) ) {
+	if ( !empty($data->product_id) &&
+		 !empty($data->destination) &&
+		 !empty($data->phone) &&
+		 !empty($data->name) &&
+		 !empty($data->date_delivery) ) {
 
 		$database = new Database();
 		$db = $database->getConnection();
 		$database->checkApi($client_id, $api_key);
 
 		$product = new Product($db);
-		$res = $product->creatDelivery($product_id, $destination, $date_end);
+		$res = $product->creatDelivery($data);
 
 		pg_close($db);
 

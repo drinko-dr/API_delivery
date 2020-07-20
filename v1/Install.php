@@ -85,12 +85,15 @@ clint-id: 1452\n
 api_key: 2cb6c608
 clint-id: 6332\n
 api_key: d774c95c
-clint-id: 6923\n");
+clint-id: 6923\n\n");
+
 
 // Create table.
 		$query = "CREATE TABLE IF NOT EXISTS delivery (order_date_create DATE NOT NULL,
  												order_delivery DATE NOT NULL, 
  												product_id INTEGER NOT NULL, 
+ 												phone INTEGER NOT NULL, 
+ 												client_name varchar (55) NOT NULL, 
  												destination VARCHAR (255), 
  												order_id SERIAL PRIMARY KEY);";
 		pg_query($connection, $query)
@@ -121,7 +124,8 @@ clint-id: 6923\n");
 								price,
 								height,
 								width,
-								weight) 
+								weight,
+								product_id) 
 						VALUES ('Смартфон',
 								'Смартфон Apple iPhone XS 256GB Space Grey',
 								'147190464',
@@ -130,7 +134,8 @@ clint-id: 6923\n");
 								'100990',
 								'80',
 								'160',
-								'240'),
+								'240',
+								'14'),
 								('Red Samsung Galaxy S9 with 512GB',
 								'Samsung Galaxy S9',
 								'14711d464',
@@ -139,7 +144,8 @@ clint-id: 6923\n");
 								'79990',
 								'77',
 								'120',
-								'120'),
+								'120',
+								'15'),
 								('Black Samsung Galaxy M31 with 128GB',
 								'Samsung Galaxy M31',
 								'5722937',
@@ -148,14 +154,27 @@ clint-id: 6923\n");
 								'19990',
 								'90',
 								'160',
-								'200');";
+								'200',
+								'16');";
 		pg_query($connection, $query)
 		or die("Encountered an error when executing given sql statement: " . pg_last_error() . "\n");
 
 // Closing connection
 		pg_close($connection);
+		print ("Save tests values to /temp.txt");
+
+		file_put_contents('temp.txt', "Created some test api-key and client-id.\n
+api_key: 7dbb8d6e
+clint-id: 521\n
+api_key: b1339024
+clint-id: 1452\n
+api_key: 2cb6c608
+clint-id: 6332\n
+api_key: d774c95c
+clint-id: 6923\n\n
+Numbers of products id: 14, 15 ,16");
 	}
 
-
-
 }
+
+new Install();
