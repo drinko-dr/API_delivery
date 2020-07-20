@@ -88,7 +88,6 @@ int
 </table>
 
 #### Пример запроса:
-***
 <pre>
 POST /v1/calculate HTTP/1.1
 Host: localhost
@@ -102,7 +101,6 @@ Content-Type: application/json
 </pre>
 
 #### Пример ответа:
-***
 <pre>
 {"result":200}
 </pre>
@@ -250,7 +248,6 @@ int
 </table>
 
 #### Пример запроса:
-***
 <pre>
 POST /v1/delivery HTTP/1.1
 Host: localhost
@@ -268,7 +265,6 @@ Content-Type: application/json
 </pre>
 
 #### Пример ответа:
-***
 <pre>
 {
     "result":
