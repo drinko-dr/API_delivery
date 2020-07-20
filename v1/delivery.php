@@ -13,20 +13,20 @@ require_once "Product.php";
 	$client_id = $headers['Client-Id'];
 	$api_key = $headers['Api-Key'];
 	$product_id = $data->product_id;
-	$sku = $data->sku;
 
 	$database = new Database();
 	$db = $database->getConnection();
 	$database->checkApi($client_id, $api_key);
 
 	$products = new Product($db);
-	$product = $products->getProduct($product_id, $sku);
+	$product = $products->getProduct($product_id);
 
 	http_response_code(200);
 
-	echo calc($product);
+	echo calc($product)."\n";
+//	var_dump( $product);
 
-	function calc($product){
+function calc($product){
 		$sumResult = 0;
 			$weight = $product['weight'];
 			$width = $product['width'];
