@@ -22,7 +22,12 @@ class Database
 	}
 
 
-
+	/**
+	 * @param $client_id
+	 * @param $api_key
+	 *	Проверка переданного ключа api и id
+	 * @return bool
+	 */
 	public function checkApi($client_id, $api_key){
 
 		$query = "SELECT * FROM api WHERE api_key = '" . $api_key . "' AND client_id= '" . $client_id . "'";

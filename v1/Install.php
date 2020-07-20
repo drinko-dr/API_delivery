@@ -52,7 +52,7 @@ class Install
 		or die("Encountered an error when executing given sql statement: " . pg_last_error() . "\n");
 		print "Finished creating table: api.\n";
 
-// Insert some data into table.
+
 		$api_key = '\'7dbb8d6e\'';
 		$client_id = 521;
 		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id);";

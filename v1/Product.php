@@ -12,6 +12,12 @@ class Product
 		$this->connection = $db;
 	}
 
+
+	/**
+	 * @param $id
+	 * Поиск товара по id
+	 * @return array|false|resource
+	 */
 	public function getProduct($id){
 
 		$query = "SELECT * FROM products WHERE product_id = '" . $id . "'";
@@ -31,6 +37,14 @@ class Product
 		return $result;
 	}
 
+	/**
+	 * @param $data
+	 * @param $data->filter - необязательный параметр.
+	 * Выводит результат заданного интервала времени
+	 * Массив всех заказов с заданным лимитом вывода
+	 *
+	 * @return array|false|resource
+	 */
 	public function getOrders($data){
 
 		$filter = null;
@@ -52,6 +66,11 @@ class Product
 		return $result;
 	}
 
+	/**
+	 * @param $orderID
+	 * @return array|false|resource
+	 * Массив с данными о заказе
+	 */
 	public function getOrderInfo($orderID){
 		$query = "SELECT *
         			FROM delivery
@@ -65,6 +84,10 @@ class Product
 		return $result;
 	}
 
+	/**
+	 * @param $data
+	 * @return string - id сформированного заказа
+	 */
 	public function creatDelivery($data){
 
 		$this->getProduct($data->product_id);

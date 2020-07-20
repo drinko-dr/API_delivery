@@ -26,11 +26,20 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 		$products = new Product($db);
 		$product = $products->getOrders($data);
+		pg_close($db);
 
+		if (!$product){
 
-		http_response_code(200);
+			http_response_code(404);
 
-		echo json_encode(array("result" => $product), JSON_UNESCAPED_UNICODE);
+			echo json_encode(array("error" => "Не найденно заказов"), JSON_UNESCAPED_UNICODE);
+		}else{
+
+			http_response_code(200);
+
+			echo json_encode(array("result" => $product), JSON_UNESCAPED_UNICODE);
+
+		}
 	}else{
 
 		http_response_code(400);

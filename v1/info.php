@@ -23,6 +23,7 @@ require_once "Product.php";
 
 		$product = new Product($db);
 		$info = $product->getOrderInfo($data->order_id);
+		pg_close($db);
 
 		if (!$info){
 

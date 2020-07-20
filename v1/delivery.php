@@ -3,8 +3,8 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
 require_once "Product.php";
+
 
 	$headers = getallheaders();
 
@@ -12,29 +12,37 @@ require_once "Product.php";
 
 	$client_id = $headers['Client-Id'];
 	$api_key = $headers['Api-Key'];
-	$product_id = $data->product_id;
 
-	$database = new Database();
-	$db = $database->getConnection();
-	$database->checkApi($client_id, $api_key);
+	if ( !empty($data->product_id) &&
+		 !empty($data->destination) &&
+		 !empty($data->phone) &&
+		 !empty($data->name) &&
+		 !empty($data->date_delivery) ) {
 
-	$products = new Product($db);
-	$product = $products->getProduct($product_id);
+		$database = new Database();
+		$db = $database->getConnection();
+		$database->checkApi($client_id, $api_key);
 
-	http_response_code(200);
+		$product = new Product($db);
+		$res = $product->creatDelivery($data);
 
-	echo calc($product)."\n";
+		pg_close($db);
 
-function calc($product){
-			$weight = $product['weight'];
-			$width = $product['width'];
-			$height = $product['height'];
+		http_response_code(200);
 
-			$cof = ($weight / 1000 - 5) * 200;
-			$cof > 0 ? $cof += ($width * $height) / 100 : $cof = ($width * $height) / 100 ;
-			$o = $cof % 100;
-			if ($o > 0 )
-				$cof += 100-$o;
+		echo json_encode(array(
+							"result" => array(
+										"success" => true,
+										"order_id" => $res
+										)
+						), JSON_UNESCAPED_UNICODE);
+	}else{
+		http_response_code(400);
 
-		return $cof;
+		echo json_encode(array("error" => "Неверный ввод данных"), JSON_UNESCAPED_UNICODE);
+		die();
+
 	}
+
+
+
