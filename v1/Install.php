@@ -55,25 +55,25 @@ class Install
 
 		$api_key = '\'7dbb8d6e\'';
 		$client_id = 521;
-		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id);";
+		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id) ON CONFLICT DO NOTHING;";
 		pg_query($connection, $query)
 		or die("Encountered an error when executing given sql statement: " . pg_last_error() . "\n");
 
 		$api_key = '\'b1339024\'';
 		$client_id = 1452;
-		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id);";
+		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id) ON CONFLICT DO NOTHING;";
 		pg_query($connection, $query)
 		or die("Encountered an error when executing given sql statement: " . pg_last_error() . "\n");
 
 		$api_key = '\'2cb6c608\'';
 		$client_id = 6332;
-		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id);";
+		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id) ON CONFLICT DO NOTHING;";
 		pg_query($connection, $query)
 		or die("Encountered an error when executing given sql statement: " . pg_last_error() . "\n");
 
 		$api_key = '\'d774c95c\'';
 		$client_id = 6923;
-		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id);";
+		$query = "INSERT INTO api (api_key, client_id) VALUES ($api_key, $client_id) ON CONFLICT DO NOTHING;";
 		pg_query($connection, $query)
 		or die("Encountered an error when executing given sql statement: " . pg_last_error() . "\n");
 
@@ -92,6 +92,7 @@ clint-id: 6923\n\n");
 		$query = "CREATE TABLE IF NOT EXISTS delivery (order_date_create DATE NOT NULL,
  												order_delivery DATE NOT NULL, 
  												product_id INTEGER NOT NULL, 
+ 												quantity INTEGER NOT NULL DEFAULT 1, 
  												phone INTEGER NOT NULL, 
  												client_name varchar (55) NOT NULL, 
  												destination VARCHAR (255), 
@@ -102,7 +103,7 @@ clint-id: 6923\n\n");
 
 // Create table.
 		$query = "CREATE TABLE IF NOT EXISTS products (description VARCHAR (255), 
-												name VARCHAR (255) NOT NULL, 
+												product_name VARCHAR (255) NOT NULL, 
 												sku  VARCHAR (255) UNIQUE, 
 												vendor  VARCHAR (255), 
 												images  VARCHAR (255), 
@@ -117,7 +118,7 @@ clint-id: 6923\n\n");
 
 // Insert some data into table.
 		$query = "INSERT INTO products (description, 
-								name,
+								product_name,
 								sku,
 								vendor,
 								images,
@@ -155,7 +156,7 @@ clint-id: 6923\n\n");
 								'90',
 								'160',
 								'200',
-								'16');";
+								'16') ON CONFLICT DO NOTHING;";
 		pg_query($connection, $query)
 		or die("Encountered an error when executing given sql statement: " . pg_last_error() . "\n");
 

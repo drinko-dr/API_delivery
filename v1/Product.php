@@ -20,7 +20,7 @@ class Product
 	 */
 	public function getProduct($id){
 
-		$query = "SELECT * FROM products WHERE product_id = '" . $id . "'";
+		$query = "SELECT * FROM products WHERE product_id = '" . intval($id ). "'";
 
 
 		$result = pg_query($this->connection, $query);
@@ -52,12 +52,12 @@ class Product
 			 !empty($data->filter->to) )
 			$filter = "WHERE order_delivery BETWEEN '".$data->filter->since."' AND '".$data->filter->to."'";
 
-		$query = "SELECT delivery.*, products.name AS product_name
+		$query = "SELECT delivery.*, products.product_name, products.price
         			FROM delivery
 					JOIN products ON products.product_id = delivery.product_id
 					".$filter."
-					ORDER BY delivery.order_delivery ".$data->dir."
-					LIMIT ".$data->limit;
+					ORDER BY delivery.order_delivery ".htmlspecialchars($data->dir)."
+					LIMIT ".intval( $data->limit );
 
 		$result = pg_query($this->connection, $query);
 
@@ -75,7 +75,7 @@ class Product
 		$query = "SELECT *
         			FROM delivery
 					JOIN products ON products.product_id = delivery.product_id
-					WHERE delivery.order_id = '".$orderID."'";
+					WHERE delivery.order_id = '".intval($orderID)."'";
 
 		$result = pg_query($this->connection, $query);
 
@@ -100,16 +100,21 @@ class Product
 
 		}
 
+		$quantity = 1;
+
+		$data->quantity == null ? : $quantity = $data->quantity;
+
 		$today =  date("Y-m-d H:i");
 
 
-		$query = "INSERT INTO delivery (order_date_create, order_delivery, product_id, destination, client_name, phone) 
+		$query = "INSERT INTO delivery (order_date_create, order_delivery, product_id, quantity, destination, client_name, phone) 
 						VALUES ('".$today."', 
 								'".$data->date_delivery."', 
-								'".$data->product_id."', 
-								'".$data->destination."',
-								'".$data->name."',
-								'".$data->phone."') RETURNING order_id";
+								'".intval($data->product_id)."', 
+								'".intval($quantity)."', 
+								'".htmlspecialchars($data->destination)."',
+								'".htmlspecialchars($data->name)."',
+								'".intval($data->phone)."') RETURNING order_id";
 
 		$result = pg_query($this->connection, $query);
 

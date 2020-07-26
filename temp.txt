@@ -1,0 +1,16 @@
+Created some test api-key and client-id.
+
+api_key: 7dbb8d6e
+clint-id: 521
+
+api_key: b1339024
+clint-id: 1452
+
+api_key: 2cb6c608
+clint-id: 6332
+
+api_key: d774c95c
+clint-id: 6923
+
+
+Numbers of products id: 14, 15 ,16

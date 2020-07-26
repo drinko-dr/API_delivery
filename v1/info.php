@@ -14,7 +14,6 @@ require_once "Product.php";
 
 	$client_id = $headers['Client-Id'];
 	$api_key = $headers['Api-Key'];
-
 	if ( !empty($data->order_id) ) {
 
 		$database = new Database();
@@ -24,8 +23,7 @@ require_once "Product.php";
 		$product = new Product($db);
 		$info = $product->getOrderInfo($data->order_id);
 		pg_close($db);
-
-		if (!$info){
+		if ( !$info ){
 
 			http_response_code(404);
 

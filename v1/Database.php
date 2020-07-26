@@ -30,7 +30,7 @@ class Database
 	 */
 	public function checkApi($client_id, $api_key){
 
-		$query = "SELECT * FROM api WHERE api_key = '" . $api_key . "' AND client_id= '" . $client_id . "'";
+		$query = "SELECT * FROM api WHERE api_key = '" .htmlspecialchars( $api_key ). "' AND client_id= '" . intval($client_id ). "'";
 
 		$result = pg_query($this->connection, $query);
 
