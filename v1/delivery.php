@@ -4,6 +4,8 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 require_once "Product.php";
+require_once "RateLimit.php";
+
 
 
 	$headers = getallheaders();
@@ -13,7 +15,9 @@ require_once "Product.php";
 	$client_id = $headers['Client-Id'];
 	$api_key = $headers['Api-Key'];
 
-	if ( !empty($data->product_id) &&
+	if ( !empty($client_id) &&
+		 !empty($api_key) &&
+		 !empty($data->product_id) &&
 		 !empty($data->destination) &&
 		 !empty($data->phone) &&
 		 !empty($data->name) &&
@@ -22,6 +26,16 @@ require_once "Product.php";
 		$database = new Database();
 		$db = $database->getConnection();
 		$database->checkApi($client_id, $api_key);
+
+		$rl = new RateLimit();
+
+		$remaining = $rl->fixSlideWindow($api_key."deliv", 10);
+		header("X-RateLimit-Limit: 10");
+		header("X-RateLimit-Remaining: ".(10 - $remaining));
+		if ( $remaining == 10){
+			http_response_code(429);
+			die();
+		}
 
 		$product = new Product($db);
 		$res = $product->creatDelivery($data);

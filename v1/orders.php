@@ -6,23 +6,38 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 	require_once "Product.php";
+require_once "RateLimit.php";
 
 
-	$headers = getallheaders();
+
+$headers = getallheaders();
 
 	$data = json_decode(file_get_contents('php://input'), false);
 
-	if ( !empty($data->dir) &&
+	$client_id = $headers['Client-Id'];
+	$api_key = $headers['Api-Key'];
+
+
+	if ( !empty($client_id) &&
+		 !empty($api_key) &&
+		 !empty($data->dir) &&
 		 ($data->dir == 'asc' || $data->dir == 'desc') &&
 		 !empty($data->limit) &&
 		 $data->limit > 0 ){
 
-		$client_id = $headers['Client-Id'];
-		$api_key = $headers['Api-Key'];
-
 		$database = new Database();
 		$db = $database->getConnection();
 		$database->checkApi($client_id, $api_key);
+
+		$rl = new RateLimit();
+
+		$remaining = $rl->fixSlideWindow($api_key."ord", 10);
+		header("X-RateLimit-Limit: 10");
+		header("X-RateLimit-Remaining: ". (10 - $remaining));
+		if ( $remaining  == 10){
+			http_response_code(429);
+			die();
+		}
 
 		$products = new Product($db);
 		$product = $products->getOrders($data);

@@ -20,7 +20,7 @@ private $headers = ["true" => [['Content-Type: application/json',
 								'Api-Key: 2cb6c608']],
 								"false" => [['Content-Type: application/json',
 								'Client-Id: f',
-								'Api-Key: SELECT` saf`'],
+								'Api-Key: ew'],
 								['Content-Type: application/json',
 								'Client-Id: 6923',
 								'Api-Key: ew'],
@@ -114,17 +114,17 @@ private $create_delivery = ["true" => [["name" => "Name",
 public function __construct()
 {
 	$this->calc_test();
-//	$this->create_delivery_test();
-//	$this->delivery_list();
-//	$this->info_test($this->delivery_info, false);
-//	$delivery_info_false = [
-//		0,
-//		21534,
-//		2153214,
-//		null,
-//		""
-//	];
-//	$this->info_test($delivery_info_false, true);
+	$this->create_delivery_test();
+	$this->delivery_list();
+	$this->info_test($this->delivery_info, false);
+	$delivery_info_false = [
+		0,
+		21534,
+		2153214,
+		null,
+		""
+	];
+	$this->info_test($delivery_info_false, true);
 
 }
 
@@ -132,52 +132,47 @@ public function __construct()
 	function calc_test()
 	{
 			$ch = curl_init($this->delivery);
-//		foreach ($this->calc_delivery['true'] as $value) {
-			$calc_true = json_encode(["product_id" => 15]);
-			$i = 0;
-			while ($i < 100) {
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_HEADER, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $calc_true);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers['false'][0]);
+		foreach ($this->calc_delivery['true'] as $value) {
+			$calc_true = json_encode($value);
 
-				try {
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HEADER, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $calc_true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers['true'][0]);
+
+			try {
 
 
-					$result = curl_exec($ch);
-//					echo "=================TEST_" . $this->count . "=====================> OK\n";
-//					echo $result . "\n";
-//					sleep(1);
-					$this->count++;
-				} catch (Exception $e) {
-					echo "=================TEST_" . $this->count . "=====================> KO\n";
-					echo "error: " . $e . "\n";
-				}
-				$i++;
+				$result = curl_exec($ch);
+				echo "=================TEST_" . $this->count . "=====================> OK\n";
+				echo $result . "\n";
+				sleep(1);
+				$this->count++;
+			} catch (Exception $e) {
+				echo "=================TEST_" . $this->count . "=====================> KO\n";
+				echo "error: " . $e . "\n";
 			}
-		echo $result . "\n";
+		}
 
-//		}
-//
-//		foreach ($this->calc_delivery['false'] as $value) {
-//			$calc_false = json_encode($value);
-//
-//			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//			curl_setopt($ch, CURLOPT_HEADER, true);
-//			curl_setopt($ch, CURLOPT_POSTFIELDS, $calc_false);
-//			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers['true'][0]);
-//
-//			try {
-//				$result = curl_exec($ch);
-//				echo "=================TEST_" . $this->count . "=====================> OK\n";
-//				echo $result . "\n";
-//				sleep(1);
-//				$this->count++;
-//			} catch (Exception $e) {
-//				echo "=================TEST_" . $this->count . "=====================> KO\n";
-//				echo "error: " . $e . "\n";
-//			}
-//		}
+		foreach ($this->calc_delivery['false'] as $value) {
+			$calc_false = json_encode($value);
+
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HEADER, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $calc_false);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers['true'][0]);
+
+			try {
+				$result = curl_exec($ch);
+				echo "=================TEST_" . $this->count . "=====================> OK\n";
+				echo $result . "\n";
+				sleep(1);
+				$this->count++;
+			} catch (Exception $e) {
+				echo "=================TEST_" . $this->count . "=====================> KO\n";
+				echo "error: " . $e . "\n";
+			}
+		}
 		curl_close($ch);
 
 	}

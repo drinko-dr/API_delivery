@@ -6,6 +6,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 require_once "Product.php";
+require_once "RateLimit.php";
+
 
 
 	$headers = getallheaders();
@@ -14,11 +16,23 @@ require_once "Product.php";
 
 	$client_id = $headers['Client-Id'];
 	$api_key = $headers['Api-Key'];
-	if ( !empty($data->order_id) ) {
+	if ( !empty($client_id) &&
+		 !empty($api_key) &&
+		 !empty($data->order_id) ) {
 
 		$database = new Database();
 		$db = $database->getConnection();
 		$database->checkApi($client_id, $api_key);
+
+		$rl = new RateLimit();
+
+		$remaining = $rl->fixSlideWindow($api_key."info", 10);
+		header("X-RateLimit-Limit: 10");
+		header("X-RateLimit-Remaining: ".(10 - $remaining));
+		if ( $remaining == 10){
+			http_response_code(429);
+			die();
+		}
 
 		$product = new Product($db);
 		$info = $product->getOrderInfo($data->order_id);
