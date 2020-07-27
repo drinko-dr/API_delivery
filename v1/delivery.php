@@ -3,8 +3,10 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-require_once "Product.php";
-require_once "RateLimit.php";
+
+
+	require_once "./includes/Product.php";
+	require_once "./includes/RateLimit.php";
 
 
 

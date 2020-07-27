@@ -5,12 +5,12 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 
-	require_once "Product.php";
-require_once "RateLimit.php";
+	require_once "./includes/Product.php";
+	require_once "./includes/RateLimit.php";
 
 
 
-$headers = getallheaders();
+	$headers = getallheaders();
 
 	$data = json_decode(file_get_contents('php://input'), false);
 

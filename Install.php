@@ -1,6 +1,6 @@
 <?php
 
-define(CONFIG, include 'config.php');
+define(CONFIG, include './v1/includes/config.php');
 
 class Install
 {
