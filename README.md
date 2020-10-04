@@ -11,7 +11,6 @@ info.php - Информация о заказе.
 
 orders.php - Информация о всех заказах.
 
-post.php - файл для тестов
 
 
 # Installation
